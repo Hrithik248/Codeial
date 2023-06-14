@@ -1,8 +1,24 @@
 const User=require('../models/user');
 module.exports.profile=function(req,res){
-    return res.render('user_profile',{
-        title:'User profile'
-    });
+    if(req.cookies.user_id){
+        User.findById(req.cookies.user_id).then((user)=>{
+            if(user){
+                return res.render('user_profile',{
+                    title:'User | Profile page',
+                    user
+                });
+            }
+            else{
+                return res.redirect('sign-in');
+            }
+        }).catch((err)=>{
+            console.log('error in finding user with id');
+            return;
+        })
+    }
+    else{
+        return res.redirect('sign-in');
+    }
 };
 //render user sign in page
 module.exports.signIn=function(req,res){
@@ -60,7 +76,7 @@ module.exports.createSession=function(req,res){
                 }
                 //handle create session
                 res.cookie('user_id',user.id);
-                return res.redirect('/users/profile');
+                return res.redirect('profile');
             }
             else{
                 //handle user not found
@@ -72,3 +88,11 @@ module.exports.createSession=function(req,res){
             return;
         })
 };
+
+
+//handling log out
+module.exports.logOut=function(req,res){
+    console.log('log out');
+    res.clearCookie('user_id');
+    return res.redirect('back');
+}
