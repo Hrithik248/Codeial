@@ -47,5 +47,5 @@ module.exports.create=function(req,res){
 };
 //create session or sign in user
 module.exports.createSession=function(req,res){
-
+    return res.redirect('/');
 };
