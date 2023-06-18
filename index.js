@@ -9,6 +9,63 @@ const db=require('./config/mongoose');
 const session=require('express-session');
 const passport=require('passport');
 const passportLoacal=require('./config/passport-local-strategy');
+const MongoStore=require('connect-mongo');
+/*compiling all scss files*/ 
+const sass= require('node-sass');
+const fs = require('fs');
+const path = require('path');
+const scssFolder =path.join(__dirname, '/assets/scss');
+const cssFolder =path.join(__dirname, '/assets/css');
+fs.readdir(scssFolder, (err, files) => {
+  if (err) {
+    console.error('Error reading scss folder:', err);
+    return;
+  }
+
+  files.forEach(file => {
+    if (path.extname(file) === '.scss') {
+      const scssFile = path.join(scssFolder, file);
+      const cssFile = path.join(cssFolder, path.basename(file, '.scss') + '.css');
+
+      sass.render({
+        file: scssFile,
+        outputStyle: 'extended',
+        outFile: cssFile,
+        sourceMap: true,
+        sourceMapEmbed: true,
+      }, (error, result) => {
+        if (error) {
+          console.error(`Error compiling ${scssFile}:`, error);
+        } else {
+          fs.writeFile(cssFile, result.css, err => {
+            if (err) {
+              console.error(`Error writing ${cssFile}:`, err);
+            } else {
+              console.log(`Compiled ${scssFile} to ${cssFile}`);
+            }
+          });
+        }
+      });
+    }
+  });
+});
+/*compiling scss files over */
+/*sass.render({
+    file:'./assets/scss/home.scss',
+    outFile:'./assets/css/home.css',
+    sourceMap: true,
+    sourceMapEmbed: true,
+    debug:true,
+    outputStyle:'extended',
+    //prefix:'/css'
+},function(err,result){
+    if(err){
+        console.log('err',err);
+    }
+    else{
+        console.log('result',result);
+    }
+});*/
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static('./assets'));
@@ -19,6 +76,7 @@ app.set('layout extractScripts',true);
 // set up view engine
 app.set('view engine','ejs');
 app.set('views','./views');
+//mongo store is used to store session cookie in the db
 app.use(session({
     name:'codeial',
     //TODO change the secret before deployment
@@ -27,10 +85,18 @@ app.use(session({
     resave:false,
     cookie:{
         maxAge:(1000*60*100)
+    },
+    store:MongoStore.create({
+        mongoUrl:'mongodb://127.0.0.1:27017/codeial_development',
+        autoRmove:'disabled'
+    },function(err){
+        console.log(err||'connect mongostore ok');
     }
+    )
 }));
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(passport.setAuthenticatedUser);
 //use express router
 app.use('/',require('./routes'));
 app.listen(port,function(err){

@@ -1,0 +1,13 @@
+header{
+    position: fixed;
+    display: flex;
+    justify-content: space-between;
+    background-color: cornflowerblue;
+    width: 100%;
+    h1{
+        display: inline-block;
+    }
+    li{
+        display: inline-block;
+    }
+}
