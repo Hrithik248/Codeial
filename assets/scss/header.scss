@@ -1,13 +1,31 @@
 header{
     position: fixed;
+    top:0;
+    right:0;
+    left: 0;
     display: flex;
     justify-content: space-between;
+    align-items: center;
     background-color: cornflowerblue;
     width: 100%;
+    padding:0 5% 0 5%;
+    box-sizing: border-box;
     h1{
+        display: inline-block;
+        color: azure;
+    }
+    ul,li{
         display: inline-block;
     }
     li{
-        display: inline-block;
+        margin: 5px;
+        a,a:link,
+        a:visited,
+        a:hover,
+        a:active{
+            text-decoration: inherit;
+            font-size: large;
+            color:aliceblue;
+        }
     }
 }
