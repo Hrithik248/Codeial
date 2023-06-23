@@ -1,3 +1,5 @@
+//if the user changes the userid in cookies by seeing id in html and after decrypting it ,
+// it belongs to the some other user then he may be able to exploit the website
 const express= require('express');
 const port=8000;
 const app= express();

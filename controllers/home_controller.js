@@ -1,20 +1,23 @@
 const Post=require('../models/posts');
 const Users=require('../models/user');
-module.exports.home=function(req,res){
+module.exports.home=async function(req,res){
     //console.log(req.cookies);
-    Post.find({}).populate('user').populate({
-        path:'comments',
-        populate:{
-            path:'user'
-        }
-    }).then((Posts)=>{
-        //console.log(Posts);
-        Users.find({}).then((users)=>{
-            return res.render('home',{
-                title:'Home | Codeial',
-                Posts,
-                all_users:users
-            });
+    try {
+        let Posts= await Post.find({}).populate('user').populate({
+            path:'comments',
+            populate:{
+                path:'user'
+            }
         });
-    });
+        let users= await Users.find({});
+        return res.render('home',{
+            title:'Home | Codeial',
+            Posts,
+            all_users:users
+        });
+
+    } catch (error) {
+        console.log('Error in loading posts and comments',error);
+        return;
+    }
 };
