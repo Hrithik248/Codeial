@@ -17,7 +17,8 @@ module.exports.home=async function(req,res){
         });
 
     } catch (error) {
-        console.log('Error in loading posts and comments',error);
+        req.flash('error','Error in loading posts and comments',error);
+        //console.log('Error in loading posts and comments',error);
         return;
     }
 };

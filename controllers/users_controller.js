@@ -8,7 +8,8 @@ module.exports.profile= async function(req,res){
         });
     }
     catch(err){
-        console.log('Error in profile controller',err);
+        req.flash('error','Error in finding profile',err);
+        //console.log('Error in profile controller',err);
         return;
     }
 };
@@ -16,13 +17,16 @@ module.exports.update=async function(req,res){
     if(req.user.id==req.params.id){
         try {
            let updatedUser=await User.findByIdAndUpdate(req.params.id,req.body);
+           req.flash('success','Updated successfully');
            return res.redirect('back');
         } catch (error) {
-            console.log('Error in update controller',error);
+            req.flash('error','Error in update controller',error);
+            //console.log('Error in update controller',error);
             return;
         }
     }
     else{
+        req.flash('error','You are not authorized to update this profile');
         return res.status(401).send('Unauthorized');
     }
 }
@@ -47,34 +51,41 @@ module.exports.signUp=function(req,res){
 //create user through sign up
 module.exports.create=async function(req,res){
     if(req.body.password!=req.body.confirm_password){
+        req.flash('error','Password and Confirm password needs to be same');
         return res.redirect('back');
     }
     try {
         let user=await User.findOne({email:req.body.email});
         if(!user){
             let newUser= await User.create(req.body);
+            req.flash('success','Your sign up was successfull');
             return res.redirect('/users/sign-in');
         }
         else{
+            req.flash('error','Try another email');
             return res.redirect('back');
         }
     } catch (error) {
-        console.log('Error in create user controller',error);
+        req.flash('error','Error in create user controller',error);
+        //console.log('Error in create user controller',error);
         return;
     }
 
 };
 //create session or sign in user
 module.exports.createSession=function(req,res){
+    req.flash('success','Logged in successfully');
     return res.redirect('/');
 };
 //sign out
 module.exports.destroySession=function(req,res){
     req.logout(function(err,som){
         if(err){
-            console.log('erro in signing out',err);
+            req.flash('error','Error in signing out',err);
+            //console.log('erro in signing out',err);
             return res.redirect('back');
         }
+        req.flash('success','Logged out succesfully');
         return res.redirect('/');
     });
 };

@@ -11,10 +11,12 @@ module.exports.create=async function(req,res){
             });
             post.comments.push(comment);
             post.save();
+            req.flash('success','Comment added successfully');
             return res.redirect('back');
         }
     } catch (error) {
-        console.log('Error in creating comment',error);
+        req.flash('error','Error in creating comment',error);
+        //console.log('Error in creating comment',error);
         return;
     }
 };
@@ -24,10 +26,16 @@ module.exports.destroy=async function(req,res){
         if(comment.user==req.user.id){
             await Comment.findByIdAndDelete(comment.id);
             await Post.findByIdAndUpdate(comment.post,{$pull:{comments:req.params.id}});
+            req.flash('success','Comment deleted successfully');
+            return res.redirect('back');
+        }
+        else{
+            req.flash('error','You cannot delete this comment');
             return res.redirect('back');
         }
     } catch (error) {
-        console.log('Error in deleteing comment',error);
+        req.flash('error','Error in deleteing comment',error);
+        //console.log('Error in deleteing comment',error);
         return;
     }
 };
