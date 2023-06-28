@@ -3,8 +3,9 @@ const Users=require('../models/user');
 module.exports.home=async function(req,res){
     //console.log(req.cookies);
     try {
-        let Posts= await Post.find({}).populate('user').populate({
+        let Posts= await Post.find({}).sort('-createdAt').populate('user').populate({
             path:'comments',
+            options: { sort: { 'createdAt': -1 } },
             populate:{
                 path:'user'
             }

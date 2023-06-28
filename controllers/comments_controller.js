@@ -11,6 +11,15 @@ module.exports.create=async function(req,res){
             });
             post.comments.push(comment);
             post.save();
+            if(req.xhr){
+                return res.status(200).json({
+                    data:{
+                        comment,
+                        userName:req.user.name
+                    },
+                    message:'comment added'
+                });
+            }
             req.flash('success','Comment added successfully');
             return res.redirect('back');
         }
@@ -26,6 +35,15 @@ module.exports.destroy=async function(req,res){
         if(comment.user==req.user.id){
             await Comment.findByIdAndDelete(comment.id);
             await Post.findByIdAndUpdate(comment.post,{$pull:{comments:req.params.id}});
+            if(req.xhr){
+                return res.status(200).json({
+                    data:{
+                        //or req.params.id
+                        comment_id:comment._id
+                    },
+                    message:'comment deleted'
+                });
+            }
             req.flash('success','Comment deleted successfully');
             return res.redirect('back');
         }
