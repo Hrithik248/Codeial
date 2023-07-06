@@ -1,4 +1,7 @@
+const { use } = require('passport');
 const User=require('../models/user');
+const fs=require('fs');
+const path=require('path');
 module.exports.profile= async function(req,res){
     try{
         let user=await User.findById(req.params.id);
@@ -16,9 +19,26 @@ module.exports.profile= async function(req,res){
 module.exports.update=async function(req,res){
     if(req.user.id==req.params.id){
         try {
-           let updatedUser=await User.findByIdAndUpdate(req.params.id,req.body);
-           req.flash('success','Updated successfully');
-           return res.redirect('back');
+           let updatedUser=await User.findById(req.params.id);
+           User.uploadedAvatar(req,res,function(err){
+            if(err){
+                console.log('**multer error',err);
+            }
+            console.log(req.file);
+            updatedUser.name=req.body.name;
+            updatedUser.email=req.body.email;
+            //console.log(path.join(__dirname+'..'+updatedUser.avatar));
+            if(req.file){
+                if(updatedUser.avatar&&fs.existsSync(path.join(__dirname,'..',updatedUser.avatar))){
+                    //console.log('prev aav');
+                    fs.unlinkSync(path.join(__dirname,'..',updatedUser.avatar));
+                }
+                updatedUser.avatar=User.avatarPath+'/'+req.file.filename;
+            }
+            updatedUser.save();
+            req.flash('success','Updated successfully');
+            return res.redirect('back');
+           });
         } catch (error) {
             req.flash('error','Error in update controller',error);
             //console.log('Error in update controller',error);
