@@ -40,8 +40,9 @@
                 success:function(data){
                     console.log(data);
                     let newComment=newCommentDom(data.data.comment,data.data.userName);
-                    $(`#post-comments-${data.data.comment.post}`).prepend(newComment);
+                    $(`#post-comments-${data.data.comment.post._id}`).prepend(newComment);
                     deleteComment($(' .com-del',newComment));
+                    $('.comment-like',newComment).on('click',likeComment);
                     new Noty({
                         theme:'relax',
                         text: 'comment created',
@@ -69,6 +70,9 @@
             <a class="com-del" href="comment/destroy/${comment._id}">X</a>
         <p>${comment.content}</p>
         <small>${userName}</small>
+        <p class="comment-likes-display" id="cld-${comment._id}">
+        </p>
+        <button class="comment-like" id="cl-${comment._id}">Like</button>
         </li>`);
     }
     //delete comments dynamically

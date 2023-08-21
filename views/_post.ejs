@@ -3,7 +3,15 @@
         <a class="delete-post-button" href="posts/destroy/<%=post.id%>">X</a>
     <%}%>   
     <h4><%=post.content%></h4>
-    <p><%=post.user.name%></p> 
+    <p><%=post.user.name%></p>
+    <p class="post-likes-display" id="pld-<%=post._id%>">
+        <%if(post.likes&&post.likes.length>0){%>
+            <%=post.likes.length%>
+        <%}%>
+    </p>
+    <%if(locals.user){%>
+    <button class="post-like" id="pl-<%=post._id%>">Like</button> 
+    <%}%>
     <div id="post-comments">
         <%if(locals.user){%>
         <form action="/comment/create" method="post"  class="new-comment-form">
@@ -21,6 +29,14 @@
                     <%}%>  
                     <p><%=comment.content%></p>
                     <small><%=comment.user.name%></small>
+                    <p class="comment-likes-display" id="cld-<%=comment.id%>">
+                        <%if(comment.likes&&comment.likes.length>0){%>
+                        <%=comment.likes.length%>
+                        <%}%>
+                    </p>
+                    <%if(locals.user){%>
+                    <button class="comment-like" id="cl-<%=comment.id%>">Like</button>
+                    <%}%>
                     </li>
                 <%})%>
             </ul>

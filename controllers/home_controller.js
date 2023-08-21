@@ -11,14 +11,40 @@ module.exports.home=async function(req,res){
             }
         });
         let users= await Users.find({});
+        let friends=[];
+        //console.log(req.user);
+        if(req.user){
+            const user = await Users.findById(req.user._id).populate({
+                path: 'friendships',
+                populate: {
+                  path: 'to_user from_user',
+                  select:'name',
+                  model: 'User'
+                }
+            });
+          
+            if (user) {
+                // Extract friend information from the populated friendships field
+                friends = user.friendships.map(friendship => {
+                  if (friendship.from_user._id.equals(user._id)) {
+                    return friendship.to_user;
+                  } else {
+                    return friendship.from_user;
+                  }
+                });
+                //console.log(friends);
+            }
+        }
         return res.render('home',{
             title:'Home | Codeial',
             Posts,
-            all_users:users
+            all_users:users,
+            all_friends:friends
         });
 
     } catch (error) {
-        req.flash('error','Error in loading posts and comments',error);
+        console.log(error);
+        req.flash('error','Error in loading posts and comments');
         //console.log('Error in loading posts and comments',error);
         return;
     }

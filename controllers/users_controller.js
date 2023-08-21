@@ -1,17 +1,36 @@
-const { use } = require('passport');
+//const { use } = require('passport');
 const User=require('../models/user');
 const fs=require('fs');
 const path=require('path');
+const crypto=require('crypto');
+const passwordMailer=require('../mailers/password_mailer');
+const Token=require('../models/token');
+const Friendship=require('../models/friendships');
 module.exports.profile= async function(req,res){
     try{
         let user=await User.findById(req.params.id);
+        /*let from_user=await Friendship.findOne({from_user:req.user.id,to_user:req.params.id});
+        let to_user=await Friendship.findOne({from_user:req.params.id,to_user:req.user.id});*/
+        const query = {
+            $or: [
+              { from_user: req.user.id, to_user: req.params.id },
+              { to_user: req.params.id, from_user: req.user.id },
+            ]
+          };
+        let existingFriendship=await Friendship.findOne(query);
+        let alreadyFriend=false;
+        if(existingFriendship){
+            alreadyFriend=true;
+        }
         return res.render('user_profile',{
             title:'User profile',
-            profile_user:user
+            profile_user:user,
+            alreadyFriend
         });
     }
     catch(err){
-        req.flash('error','Error in finding profile',err);
+        console.log(err);
+        req.flash('error','Error in finding profile');
         //console.log('Error in profile controller',err);
         return;
     }
@@ -109,3 +128,74 @@ module.exports.destroySession=function(req,res){
         return res.redirect('/');
     });
 };
+//forgot password
+module.exports.forgot_password=function(req,res){
+    //console.log('forger');
+    return res.render('forgot_password',{
+        title:'Forgot password'
+    });
+}
+//sending reset token link on email
+module.exports.sendToken=async function(req,res){
+    try {
+        let crUser=await User.findOne({email:req.body.email});
+        if(!crUser){
+            req.flash('error','You need to sign up');
+            return res.redirect('back');
+        }
+        console.log(crUser,req.body);
+        let token=await Token.create({
+            email:req.body.email,
+            accessToken:crypto.randomBytes(20).toString('hex')
+        });
+        //console.log('alt');
+        passwordMailer.sendPassToken(token);
+        return res.send('<h1>check your email inbox</h1>');
+    } catch (error) {
+        console.log('er fo',error);
+        req.flash('error','You need to sign up');
+        return res.redirect('back');
+    }
+}
+//reset password
+module.exports.resetPassword=async function(req,res){
+    console.log('here amn');
+    try {
+        let token=await Token.findOne({accessToken:req.params.accessToken});
+        console.log(req.params.acccessToken,token);
+        if(!token){
+            return res.send('<h1>your access token expired!</h1>');
+        }
+        return res.render('reset_password_page',{
+            token,
+            title:'Reset Password'
+        });
+    } catch (error) {
+        req.flash('error','Internal server error',error);
+        return res.redirect('back');
+    }
+}
+//setting new password
+module.exports.setNewPassword=async function(req,res){
+    try {
+        if(req.body.password!=req.body.confirm_password){
+            req.flash('error','Wrong confirm password');
+            return res.redirect('back');
+        }
+        let token=await Token.findOne({accessToken:req.params.accessToken});
+        if(!token){
+            req.flash('error','Token expired');
+            return res.redirect('back');
+        }
+        let user=await User.findOne({email:token.email});
+        user.password=req.body.password;
+        user.save();
+        await Token.deleteOne({accessToken:req.params.accessToken});
+        req.flash('success','Updated successfully');
+        return res.redirect('/users/sign-in');
+    } catch (error) {
+        req.flash('error','Internal server error');
+        return res.redirect('back');
+    }
+
+}

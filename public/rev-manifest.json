@@ -1,0 +1,8 @@
+{
+  "js/chat_engine.js": "js/chat_engine-d8bbbbc6f2.js",
+  "js/home_posts.js": "js/home_posts-2cabd1b01c.js",
+  "js/home_posts_comments.js": "js/home_posts_comments-c92bc6ecd1.js",
+  "js/likes_functionallity.js": "js/likes_functionallity-5bb2e25be7.js",
+  "js/toggle_friend.js": "js/toggle_friend-0dbaa8cd65.js",
+  "js/update_avatar_preview.js": "js/update_avatar_preview-57eb18894c.js"
+}

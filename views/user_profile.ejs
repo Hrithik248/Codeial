@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/css/profile.css">
+<link rel="stylesheet" href="<%=assetPath('scss/profile.css')%>">
 <img src="<%=profile_user.avatar%>" alt="<%=profile_user.name%>">
 <%if(profile_user.id==user.id){%>
     <form action="/users/update/<%=profile_user.id%>" method="post" enctype="multipart/form-data">
@@ -10,4 +10,13 @@
 <%}else{%>
     <p><%=profile_user.name%></p>
     <p><%=profile_user.email%></p>
-<%}%>        
+    <button class="add-remove-friend" id="arf-<%=profile_user._id%>">
+        <%if(alreadyFriend){%>
+            Remove from friend list
+        <%}else{%>
+            Add to friend list
+        <%}%>        
+    </button>
+<%}%>
+<script src="<%=assetPath('js/update_avatar_preview.js')%>"></script>
+<script src="<%=assetPath('js/toggle_friend.js')%>"></script>       

@@ -1,0 +1,62 @@
+#chat-box {
+  position: fixed;
+  bottom: 0;
+  right: 1%;
+  height: 50%;
+  width: 25%;
+  min-height: 300px;
+  min-width: 300px;
+  background-color: #000000;
+  border-radius: 25px 25px 0 0;
+  overflow: hidden; }
+  #chat-box #chat-box-header {
+    position: absolute;
+    top: 0;
+    background: #5C258D;
+    background: -webkit-linear-gradient(to right, #4389A2, #5C258D);
+    background: linear-gradient(to right, #4389A2, #5C258D);
+    height: 15%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; }
+    #chat-box #chat-box-header i {
+      color: #FFFFFF;
+      margin-right: 5%; }
+  #chat-box #chat-box-messages {
+    padding-top: 15%;
+    padding-bottom: 10%;
+    background-color: #F0F8FF;
+    height: 100%;
+    overflow-x: scroll;
+    width: 100%; }
+    #chat-box #chat-box-messages ul {
+      list-style: none;
+      font-size: 20px;
+      color: #FFFFFF;
+      margin: 0;
+      padding: 0; }
+      #chat-box #chat-box-messages ul li {
+        padding: 10px;
+        display: inline-block;
+        border-radius: 10px; }
+    #chat-box #chat-box-messages .friend-message {
+      background-color: deepskyblue;
+      float: left; }
+    #chat-box #chat-box-messages .your-message {
+      background-color: plum;
+      float: right; }
+  #chat-box #message-bar {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 10%; }
+    #chat-box #message-bar #message-input {
+      width: 70%; }
+    #chat-box #message-bar #message-send-button {
+      width: 30%;
+      background-color: #ADD8E6; }
+
+/*# sourceMappingURL=data:application/json;base64,ewoJInZlcnNpb24iOiAzLAoJImZpbGUiOiAiY2hhdGJveC5jc3MiLAoJInNvdXJjZXMiOiBbCgkJIi4uL3Njc3MvY2hhdGJveC5zY3NzIgoJXSwKCSJuYW1lcyI6IFtdLAoJIm1hcHBpbmdzIjogIkFBQUEsQUFBQSxTQUFTLENBQUE7RUFDTCxRQUFRLEVBQUUsS0FBSztFQUNmLE1BQU0sRUFBRSxDQUFDO0VBQ1QsS0FBSyxFQUFFLEVBQUU7RUFDVCxNQUFNLEVBQUUsR0FBRztFQUNYLEtBQUssRUFBRSxHQUFHO0VBQ1YsVUFBVSxFQUFFLEtBQUs7RUFDakIsU0FBUyxFQUFDLEtBQU07RUFDaEIsZ0JBQWdCLEVBQUUsT0FBTztFQUN6QixhQUFhLEVBQUMsYUFBYTtFQUMzQixRQUFRLEVBQUUsTUFBTSxHQTREbkI7RUF0RUQsQUFXSSxTQVhLLENBV0wsZ0JBQWdCLENBQUE7SUFDWixRQUFRLEVBQUUsUUFBUTtJQUNsQixHQUFHLEVBQUUsQ0FBQztJQUNOLFVBQVUsRUFBRSxPQUFPO0lBQ25CLFVBQVUsRUFBRSxtREFBbUQ7SUFDL0QsVUFBVSxFQUFFLDJDQUEyQztJQUN2RCxNQUFNLEVBQUUsR0FBRztJQUNYLEtBQUssRUFBRSxJQUFJO0lBQ1gsT0FBTyxFQUFFLElBQUk7SUFDYixXQUFXLEVBQUUsTUFBTTtJQUNuQixlQUFlLEVBQUUsUUFBUSxHQUs1QjtJQTFCTCxBQXNCUSxTQXRCQyxDQVdMLGdCQUFnQixDQVdaLENBQUMsQ0FBQTtNQUNHLEtBQUssRUFBRSxPQUFPO01BQ2QsWUFBWSxFQUFFLEVBQUUsR0FDbkI7RUF6QlQsQUEyQk0sU0EzQkcsQ0EyQkgsa0JBQWtCLENBQUE7SUFDaEIsV0FBVyxFQUFFLEdBQUc7SUFDaEIsY0FBYyxFQUFFLEdBQUc7SUFDbkIsZ0JBQWdCLEVBQUUsT0FBTztJQUN6QixNQUFNLEVBQUUsSUFBSTtJQUNaLFVBQVUsRUFBRSxNQUFNO0lBQ2xCLEtBQUssRUFBRSxJQUFJLEdBcUJiO0lBdEROLEFBa0NRLFNBbENDLENBMkJILGtCQUFrQixDQU9oQixFQUFFLENBQUE7TUFDRSxVQUFVLEVBQUUsSUFBSTtNQUNoQixTQUFTLEVBQUUsSUFBSTtNQUNmLEtBQUssRUFBRSxPQUFPO01BQ2QsTUFBTSxFQUFFLENBQUM7TUFDVCxPQUFPLEVBQUMsQ0FBQyxHQU1WO01BN0NYLEFBd0NZLFNBeENILENBMkJILGtCQUFrQixDQU9oQixFQUFFLENBTUUsRUFBRSxDQUFBO1FBQ0UsT0FBTyxFQUFFLElBQUk7UUFDYixPQUFPLEVBQUUsWUFBWTtRQUNyQixhQUFhLEVBQUUsSUFBSSxHQUN0QjtJQTVDYixBQThDVSxTQTlDRCxDQTJCSCxrQkFBa0IsQ0FtQmQsZUFBZSxDQUFBO01BQ2IsZ0JBQWdCLEVBQUUsV0FBYztNQUNoQyxLQUFLLEVBQUUsSUFBSSxHQUNaO0lBakRYLEFBa0RVLFNBbERELENBMkJILGtCQUFrQixDQXVCZCxhQUFhLENBQUE7TUFDWCxnQkFBZ0IsRUFBRSxJQUFnQjtNQUNsQyxLQUFLLEVBQUUsS0FBSyxHQUNiO0VBckRYLEFBdURNLFNBdkRHLENBdURILFlBQVksQ0FBQTtJQUNWLFFBQVEsRUFBQyxRQUFTO0lBQ2xCLE1BQU0sRUFBRSxDQUFDO0lBQ1QsT0FBTyxFQUFFLElBQUk7SUFDYixTQUFTLEVBQUUsSUFBSTtJQUNmLEtBQUssRUFBRSxJQUFJO0lBQ1gsTUFBTSxFQUFFLEdBQUcsR0FRWjtJQXJFUCxBQThEUSxTQTlEQyxDQXVESCxZQUFZLENBT1YsY0FBYyxDQUFBO01BQ1YsS0FBSyxFQUFFLEdBQUcsR0FDYjtJQWhFVCxBQWlFUSxTQWpFQyxDQXVESCxZQUFZLENBVVYsb0JBQW9CLENBQUE7TUFDaEIsS0FBSyxFQUFFLEdBQUc7TUFDVixnQkFBZ0IsRUFBRSxPQUFPLEdBQzVCIgp9 */

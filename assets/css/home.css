@@ -1,4 +1,10 @@
 body {
   background-color: cornsilk; }
+  body #home {
+    display: flex; }
+    body #home #feed-posts {
+      width: 70%; }
+    body #home #users-and-friends {
+      width: 29%; }
 
-/*# sourceMappingURL=data:application/json;base64,ewoJInZlcnNpb24iOiAzLAoJImZpbGUiOiAiaG9tZS5jc3MiLAoJInNvdXJjZXMiOiBbCgkJIi4uL3Njc3MvaG9tZS5zY3NzIgoJXSwKCSJuYW1lcyI6IFtdLAoJIm1hcHBpbmdzIjogIkFBQUEsQUFBQSxJQUFJLENBQUE7RUFDQSxnQkFBZ0IsRUFBQyxRQUFRLEdBQzVCIgp9 */
+/*# sourceMappingURL=data:application/json;base64,ewoJInZlcnNpb24iOiAzLAoJImZpbGUiOiAiaG9tZS5jc3MiLAoJInNvdXJjZXMiOiBbCgkJIi4uL3Njc3MvaG9tZS5zY3NzIgoJXSwKCSJuYW1lcyI6IFtdLAoJIm1hcHBpbmdzIjogIkFBQUEsQUFBQSxJQUFJLENBQUE7RUFDQSxnQkFBZ0IsRUFBQyxRQUFRLEdBVTVCO0VBWEQsQUFFSSxJQUZBLENBRUEsS0FBSyxDQUFBO0lBQ0QsT0FBTyxFQUFFLElBQUksR0FPaEI7SUFWTCxBQUlRLElBSkosQ0FFQSxLQUFLLENBRUQsV0FBVyxDQUFBO01BQ1AsS0FBSyxFQUFDLEdBQUcsR0FDWjtJQU5ULEFBT1EsSUFQSixDQUVBLEtBQUssQ0FLRCxrQkFBa0IsQ0FBQTtNQUNkLEtBQUssRUFBRSxHQUFHLEdBQ2IiCn0= */

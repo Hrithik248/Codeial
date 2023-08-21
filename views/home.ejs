@@ -1,25 +1,47 @@
-<link rel="stylesheet" href="/css/home.css">
-    <h1>Home / <%=title%></h1>
-    <section id="feed-posts">
-        <h4>Posts</h4>
-        <%if(locals.user){%>
+<link rel="stylesheet" href="<%=assetPath('scss/home.css')%>">
+<h1>Home / <%=title%></h1>
+<section id="home">
+<section id="feed-posts">
+    <h4>Posts</h4>
+    <%if(locals.user){%>
     <form action="/posts/create" id="new-post-form" method="post">
         <textarea name="content" cols="30" rows="4" required></textarea>
         <input type="submit" value="Post">
     </form>
     <%}%>
-    </section>
     <section id="created-posts">
         <ul>
-        <%for(post of Posts){%>
-            <%-include('_post')-%>
-        <%}%>
+            <%for(post of Posts){%>
+                <%-include('_post')-%>
+            <%}%>
         </ul>
     </section>
+</section>
+<section id="users-and-friends">
     <section id="friends-list">
-        <%for(u of all_users){%>
-            <a href="/users/profile/<%=u.id%>"><%=u.name%></a><br>
+        <h3>Friends</h3>
+        <%for(f of all_friends){%>
+            <a href="/users/profile/<%=f.id%>"><%=f.name%></a><br>
         <%}%>    
-    </section>    
-<script src="/js/home_posts.js"></script>
-<script src="/js/home_posts_comments.js"></script>
+    </section>
+    <section id="users-list">
+        <h3>All users</h3>
+        <%for (u of all_users){%>
+        <a href="/users/profile/<%= u.id %>"><%=u.name%></a><br>
+        <%}%>    
+    </section> 
+</section>
+<section id="chat-box-con">
+    <%-include('chatbox')-%>
+</section> 
+</section>  
+<script src="<%=assetPath('js/home_posts.js')%>"></script>
+<script src="<%=assetPath('js/home_posts_comments.js')%>"></script>
+<script src="<%=assetPath('js/likes_functionallity.js')%>"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.1/socket.io.js"></script>
+<script src="<%=assetPath('js/chat_engine.js')%>"></script>
+<%if(locals.user){%>
+    <script>
+        new ChatEngine('user-chat-box','<%=locals.user.email%>');
+    </script>
+<%}%>    

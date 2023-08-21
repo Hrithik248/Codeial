@@ -15,6 +15,7 @@
                     //deletePost($(`#post-${data.data.post._id} .delete-post-button`)); or
                     deletePost($(' .delete-post-button',newPost));
                     createComment($(' .new-comment-form',newPost));
+                    $('.post-like',newPost).on('click',likePost);
                     new Noty({
                         theme:'relax',
                         text: 'Post created',
@@ -41,7 +42,10 @@
         return $(`<li id="post-${post._id}">
             <a class="delete-post-button" href="posts/destroy/${post._id}">X</a> 
         <h4>${post.content}</h4>
-        <p>${userName}</p> 
+        <p>${userName}</p>
+        <p class="post-likes-display" id="pld-${post._id}">
+        </p>
+        <button class="post-like" id="pl-${post._id}">Like</button>  
         <div id="post-comments">
             <form action="/comment/create" method="post"  class="new-comment-form">
                 <input type="text" name="content" placeholder="write your comment here...">
@@ -63,6 +67,7 @@
                 type:'get',
                 url:$(deleteLink).prop('href'),
                 success:function(data){
+                    console.log(data);
                     $(`#post-${data.data.post_id}`).remove();
                     new Noty({
                         theme:'relax',

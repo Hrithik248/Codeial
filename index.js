@@ -1,8 +1,11 @@
 //if the user changes the userid in cookies by seeing id in html and after decrypting it ,
 // it belongs to the some other user then he may be able to exploit the website
 const express= require('express');
+const env=require('./config/environment');
+const logger=require('morgan');
 const port=8000;
 const app= express();
+require('./config/view-helpers')(app);
 const cookieParser= require('cookie-parser');
 const bodyParser = require('body-parser');
 const expressLayouts=require('express-ejs-layouts');
@@ -15,12 +18,19 @@ const MongoStore=require('connect-mongo');
 //flash messages 
 const flash =require('connect-flash');
 const customMware=require('./config/flash-message-middleware');
+//setup the chatserver to be used with socket.io
+const chatServer=require('http').Server(app);
+const chatSockets=require('./config/chat_sockets').chatSockets(chatServer);
+chatServer.listen('5000',()=>{
+  console.log('chat server is listening on 5000');
+});
 /*compiling all scss files*/ 
 const sass= require('node-sass');
 const fs = require('fs');
 const path = require('path');
-const scssFolder =path.join(__dirname, '/assets/scss');
-const cssFolder =path.join(__dirname, '/assets/css');
+const scssFolder =path.join(__dirname,env.asset_path,'scss');
+const cssFolder =path.join(__dirname,env.asset_path,'css');
+//if env.name=='development' then compile css
 fs.readdir(scssFolder, (err, files) => {
   if (err) {
     console.error('Error reading scss folder:', err);
@@ -73,9 +83,10 @@ fs.readdir(scssFolder, (err, files) => {
 });*/
 app.use(cookieParser());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(express.static('./assets'));
+app.use(express.static(env.asset_path));
 //making uploads folder available 
 app.use('/uploads',express.static(__dirname+'/uploads'));
+app.use(logger(env.morgan.mode,env.morgan.options));
 app.use(expressLayouts);
 //extract style and script from sub pages to layout
 app.set('layout extractStyles',true);
@@ -87,7 +98,7 @@ app.set('views','./views');
 app.use(session({
     name:'codeial',
     //TODO change the secret before deployment
-    secret:'mynigro',
+    secret:env.session_cookie_key,
     saveUninitialized:false,
     resave:false,
     cookie:{

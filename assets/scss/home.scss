@@ -1,3 +1,12 @@
 body{
     background-color:cornsilk;
+    #home{
+        display: flex;
+        #feed-posts{
+            width:70%;
+        }
+        #users-and-friends{
+            width: 29%;
+        }
+    }
 }

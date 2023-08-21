@@ -1,0 +1,1 @@
+let avatarInput=$("#avatar-input"),form=$("form");avatarInput.on("input",(function(){var a=new FileReader;a.onload=function(a){$("#preview-image").attr("src",a.target.result)},a.readAsDataURL(avatarInput[0].files[0])}));
